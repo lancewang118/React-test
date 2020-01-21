@@ -1,9 +1,9 @@
-#Git 入門
+# Git 入門
 
-##Git基本介紹
+## Git基本介紹
 **Git** 是一個分散式版本控制軟體，最初由林納斯·托瓦茲創作，於2005年以GPL釋出。最初目的是為更好地管理Linux核心開發而設計。 [維基百科](https://zh.wikipedia.org/wiki/Git)  
   
-###基本指令
+### 基本指令
 ```
 $git --version  	//顯示git 版本
 ```
