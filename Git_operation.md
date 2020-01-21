@@ -4,13 +4,13 @@
 **Git** 是一個分散式版本控制軟體，最初由林納斯·托瓦茲創作，於2005年以GPL釋出。最初目的是為更好地管理Linux核心開發而設計。 [維基百科](https://zh.wikipedia.org/wiki/Git)  
 
 **本地端版本管理**  
-![](https://github.com/lancewang118/React-test/tree/master/image/RCS.png)  
+![RCS](https://github.com/lancewang118/React-test/tree/master/image/RCS.png)  
 
 **集中式版本管理**  
-![](https://github.com/lancewang118/React-test/tree/master/image/CVCS.png)  
+![VCS](https://github.com/lancewang118/React-test/tree/master/image/CVCS.png)  
 
 **分散式版本管理**  
-![](https://github.com/lancewang118/React-test/tree/master/image/DVCS.png)  
+![DVCS](https://github.com/lancewang118/React-test/tree/master/image/DVCS.png)  
 
 ### 設定環境
 利用git的工具 git config能夠取得和設定參數，這參數存放在下列三個位置：  
@@ -93,7 +93,7 @@ git version 2.23.0
 ## 基本指令
 首先要了解Git 專案的三個狀態：git 資料夾、工作目錄(working)及預存區(staging)。  
 
-![git version](https://github.com/lancewang118/React-test/tree/master/image/status.png)
+![git version](https://github.com/lancewang118/React-test/blob/master/image/Status.png)
 
 
   
@@ -123,7 +123,7 @@ $git clone httpe://github.com/ho-liu-ken/fist myFist	//clone 遠端fist project 
 ### 檢查檔案狀態
 工作目錄下的每個檔案只有兩種狀態：已追蹤(tracked)、未追蹤(untracked)。在tracked中的檔案狀態可能為：未修改(Unmodified)、已修改(modified)、已預存(staged)；未追蹤則是在工作目錄下但不在上次的快照(snapshot)及 staged area內的檔案。  
 
-![git version](https://github.com/lancewang118/React-test/tree/master/image/file_status.png)
+![File_status](https://github.com/lancewang118/React-test/tree/master/image/file_status.png)
 
 **git status** 用來檢查檔案處在什麼樣的狀態下。  
 
