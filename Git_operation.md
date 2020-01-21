@@ -16,7 +16,7 @@
 利用git的工具 git config能夠取得和設定參數，這參數存放在下列三個位置：  
 
 * /etc/gitconfig： 所有使用者預設設定，使用參數 --system。
-* ~/.gitconfig、~/.config/git/config： 帳號使用者 專用設定。 使用參數 --global
+* \~/.gitconfig、\~/.config/git/config： 帳號使用者 專用設定。 使用參數 --global
 * .git/config：Repository 專用的設定。
 * 優先權： Repository > user > all.
 
@@ -470,7 +470,7 @@ $git remote
 origin
 ```
 
-### Git remote add/rm 新增/移除遠端 repository
+### Git remote add/rm/rename 新增/移除/變更遠端別名 repository
 
 使用命令 **git remote add/rm 簡稱 url** 來新增或是移除遠端repository 連結。
 
@@ -489,6 +489,11 @@ $git remote -v
 ra	https://github.com/lance/React-test (fetch)
 ra	https://github.com/lance/React-test (push)
 ```
+
+使用命令 **git remote rename origin ra**，可以用來將遠端簡稱變更名字。
+
+`$git remote rename origin final`
+
 
 ### Git Clone / fetch / pull / push
 
@@ -513,7 +518,7 @@ nothing to commit, working tree clean
 當使用**git fetch**時，Git 會取得在clone 之後被推送到伺服器上的新的檔案，**但是 git fetch 只下載資料，不會自動合併，必須自己用手動方式進行合併**
 
 
-如果目前的分支(branch)有設定追蹤遠端上的分支，當使用**git pull**時， Git 會自動獲取並合併 遠端分支資料到本地分支裡。
+如果目前的分支(branch)有設定追蹤遠端上的分支，當使用**git pull**時， Git 會自動獲取並合併遠端分支資料到本地分支裡。
 
 ```
 $git pull
@@ -562,4 +567,170 @@ $git remote show origin
     master merges with remote master
   Local ref configured for 'git push':
     master pushes to master (up to date)
+```
+
+### Tag
+
+利用來對特別的時間點貼標籤表示重要性，通常用來標版本。
+
+#### list tag
+
+想要列出所有標籤，只要使用 **git tag**即可，若要列出特定的標籤，則可以使用 **git tag -l "v1.2\*"** 之類的命令。
+
+`$git tag -l "1.2*"`
+
+#### Add tag
+
+Git使用的標籤主要有：輕量級標籤跟有註解的標籤。  
+輕量級標籤只會指向一個特定的提交。而有註解的標籤則會在 Git 的資料庫儲存成完整的物件。包含貼標籤的人的名字、電子郵件、日期、標籤訊息、並且可以簽署及透過 GNU Privacy Guard (GPG) 驗證。
+
+```
+$git tag -a v0.2 -m "Git_Operation Version 0.2"
+$git tag
+v0.2
+$git show v0.2		//只show出tag v0.2的資訊
+tag v0.2
+Tagger: cml <flow@cml>
+Date:   Tue Jan 21 20:14:45 2020 +0800
+
+Git_Operation Version 0.2
+
+commit b507013fed61bdff49ce291e638ebf4c5d213931 (HEAD -> master, tag: v0.2, origin/master, origin/HEAD)
+Author: cml <flow@cml>
+Date:   Tue Jan 21 19:39:25 2020 +0800
+
+    link modified
+
+
+$git show		//tag會加到最近一次的commit上
+commit b507013fed61bdff49ce291e638ebf4c5d213931 (HEAD -> master, tag: v0.2, origin/master, origin/HEAD)
+Author: cml <flow@cml>
+Date:   Tue Jan 21 19:39:25 2020 +0800
+```
+
+當不指定 -a、-s、-m的選項時，則是輕量級標籤。
+
+```
+$git tag v0.1.5
+$git tag
+v0.1.5
+v0.2
+```
+
+#### 補上標籤
+
+假設在commit時，忘記加上tag，還是可以去補上標籤。
+
+```
+$git log --pretty=oneline
+b507013fed61bdff49ce291e638ebf4c5d213931 (HEAD -> master, tag: v0.2, tag: v0.1.5, origin/master, origin/HEAD) link modified
+cb81b828f6d760d6266d474b450868c4a2d28737 image link modified
+9bc79612ce02c8869fc1e060ced96bdfd3d4010f Contents added
+eff4ee0124e43a094094b8a1ededeb5a4ad91cf3 added image files
+a06eba37fea6f82eb4659c7888ab02d949824d01 change content
+54b6487496ecbf2ceb10b0d17f15b7785b93ffb0 Add files via upload
+a2f1bb8f007c61459fee58ed3f41a38bf5509a68 Add files via upload
+e7f1003aa111ff02f9d1eca097e8b6385c6bef44 Add files via upload
+f2a580f142357c28b835ca71952b3cde14e6eec5 Add files via upload
+b3213d2e3a9aa25ee2ca848896ede58b1f2d6233 Initial commit
+$git tag -a v0.0.1 -m "message" b321		//SHA-1校驗碼至少要前四個或以上
+$git log --pretty=oneline
+a2f1bb8f007c61459fee58ed3f41a38bf5509a68 Add files via upload
+e7f1003aa111ff02f9d1eca097e8b6385c6bef44 Add files via upload
+f2a580f142357c28b835ca71952b3cde14e6eec5 Add files via upload
+b3213d2e3a9aa25ee2ca848896ede58b1f2d6233 (tag: v0.0.1) Initial commit
+```
+
+#### Git push tag
+
+預設 Git push 到遠端伺服器時，是不會將標籤也更新上去的，所以若想要標籤也一併更新，要額外用命令將標籤更新上去。
+
+```
+$git push odigin --tags		//更新所有的tag.
+$git push origin v0.2			//更新 v0.2.
+```
+
+### Git Alias
+
+如果命令太長或是懶得打字，可以使用 **git config**進行設定。
+
+```
+$git config --global alias.br branch
+$git config --global alias.a add		\\git a == git add
+$git config --global alias.c commit		\\git c == git commit
+$git config --global alias.last 'log -1 HEAD'	\\git last == git log -1 HEAD
+```
+
+若是要使用外部指令，則需要在指令開頭加上 **!** 字元。
+
+`$git config --global alias.md '!mkdir'`
+
+## Branch 分支
+
+### Git branch
+
+當我們想要建立分支(branch)時，使用命令 **git branch name**。
+
+```
+$git branch rea
+$git log --oneline
+a5a1d78 (HEAD -> master, rea) change file name		//目前分支是 master，新建分支也指向 a5a1d78.
+bb6acd3 Added Redux content
+8376d35 change React contents
+b34fb0b fix bug
+6d4f8de initial project
+```
+
+### Git checkout branch
+
+當我們想要將目前工作轉向新的分支時，可以使用 **git checkout branch**，假設兩個分支是不同時間點的內容，那工作區的檔案會被切換成另一個分支的檔案，例如在目前的分支(master)新增一個檔案並commit，然後來觀察變化。
+
+```
+$git log --oneline
+fd79855 (HEAD -> master) added index.html		//master 新增了檔案
+a5a1d78 (rea) change file name			//分支 rea 還是在a5a1d78
+bb6acd3 Added Redux content
+8376d35 change React contents
+b34fb0b fix bug
+6d4f8de initial project
+```
+
+當我們將分支從master移到 rea去，然後來看一下工作區內的檔案，可以發現原本 master新增的檔案：**index.html**不見了，同
+時看不到 master 分支新的校驗碼。
+
+```
+$git checkout rea
+Switched to branch 'rea'
+$git log --oneline
+a5a1d78 (HEAD -> rea) change file name		\\目前分支指向 rea， 校驗碼為a5a1d78
+bb6acd3 Added Redux content
+8376d35 change React contents
+b34fb0b fix bug
+6d4f8de initial project
+```
+
+### Git merge
+
+假設我們在原本的專案上，突然遇到一個問題或是想增加一個新功能，這時我們就可以利用建立新的分支去解決這個修正又不影響到主線的任何設定，等到新功能或是問題解決了，再回到主線去，將副線任務合併回來，有點像在玩遊戲中去打副本任務。
+
+```
+$git checkout -b rea		//利用 -b 參數，可以建立新分支並切換到新分支
+$git add 'index.html'
+$git commit -m 'rea project index.html'
+$git checkout master
+$git merge rea -m 'merge rea'
+$git log --oneline --decorate --grapg --all
+*   64f2e44 (HEAD -> master) merge rea		//branch: master merge rea.
+|\  
+| * 16009ff (rea) rea project index.html			//branch: rea new project commit
+* | 865da97 remove index
+* | fd79855 added index.html					//* 表示有 commit 記錄
+|/  											//add new branch : rea
+* a5a1d78 change file name			
+* bb6acd3 Added Redux content
+* 8376d35 change React contents
+* b34fb0b fix bug
+| * 3283ef7 (iss1) add new branch [issue 1]
+|/  
+* 6d4f8de initial project
 ```
